@@ -9,14 +9,24 @@ version '1.0-SNAPSHOT'
 repositories {
     mavenCentral()
 }
+sourceCompatibility = '17'
+targetCompatibility = '17'
 
 dependencies {
     testImplementation(
             "com.codeborne:selenide:6.12.2",
-            "com.github.javafaker:javafaker:1.0.2",
             "org.junit.jupiter:junit-jupiter:5.9.2",
+            "io.qameta.allure:allure-selenide:2.17.3",
+
+            "io.github.bonigarcia:webdrivermanager:5.3.0",
             "org.slf4j:slf4j-simple:2.0.6",
-            "io.qameta.allure:allure-selenide:2.17.3"
+            "com.codeborne:xls-test:1.4.3",
+            "org.assertj:assertj-core:3.23.1",
+            "com.google.code.gson:gson:2.10",
+            "io.rest-assured:rest-assured:5.1.0",
+            "com.codeborne:xls-test:1.4.3",
+            "com.github.javafaker:javafaker:1.0.2",
+            "org.aspectj:aspectjweaver:1.9.9."
     )
 }
 allure {
@@ -32,11 +42,35 @@ allure {
         }
     }
 }
-
+compileJava {
+    options.encoding = 'UTF-8'
+}
+compileTestJava {
+    options.encoding = 'UTF-8'
+}
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
+//tasks.withType(Test).configureEach{ //https://youtu.be/ZIkIUCyJBGU?t=317 взял кусок отсюда - для параллельного выполнения тестов
+//    maxParallelForks = 3
+//}
+
+test {
+    useJUnitPlatform()
+    systemProperties(System.getProperties())    //https://youtu.be/ZIkIUCyJBGU?t=564
+    maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?:1  //https://youtu.be/ZIkIUCyJBGU?t=564
+}
+
+//https://youtu.be/LucQoMwQ3xI?t=1587 - подключение аллюр отчетов
+//allure {
+//    autoconfigure = true
+//    version = "${allureVersion}"
+//
+//    useJUnit5 {
+//        version = "${allureVersion}"
+//    }
+//}
 
 test {
     useJUnitPlatform()
