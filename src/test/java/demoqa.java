@@ -48,8 +48,9 @@ public class demoqa {
 //        $(".react-datepicker__month-select").$(byText("June")).click(); //alternative way
         $(".react-datepicker__day.react-datepicker__day--019").click();
 
-        $(".subjects-auto-complete__control").click();
-        $(".subjects-auto-complete__control").press("Arts").pressEnter();
+        $("#subjectsInput").setValue("Hindi").pressEnter();
+        $("#subjectsInput").setValue("Arts").pressEnter();
+        $("#subjectsInput").setValue("Biology").pressEnter();
 
     }
 
