@@ -8,19 +8,19 @@ import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.*;
 
-public class demoqa {
+public class DemoqaNaked {
 
     //https://demoqa.com/automation-practice-form
     @BeforeAll
     static void setUp() {
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide());
 
-        Configuration.holdBrowserOpen = true;
+//        Configuration.holdBrowserOpen = true;
         Configuration.baseUrl = System.getProperty("base_url", "https://demoqa.com/automation-practice-form");
         Configuration.browserSize = System.getProperty("browser_size", "1920x1080");
+
         open("");
         executeJavaScript("$('footer').remove()");
         executeJavaScript("$('#fixedban').remove()");
@@ -29,11 +29,11 @@ public class demoqa {
     @Test
     @DisplayName("Only open page")
     void openPageTest() {
-        Selenide.closeWindow();;
+        Selenide.closeWindow();
     }
 
     @Test
-    @DisplayName("Fill field")
+    @DisplayName("Fill all fields and check them")
     void fillFieldTest() {
         $("#firstName").setValue("firstName");
         $("#lastName").setValue("lastName");
@@ -52,8 +52,33 @@ public class demoqa {
         $("#subjectsInput").setValue("Arts").pressEnter();
         $("#subjectsInput").setValue("Biology").pressEnter();
 
+        $("[for=hobbies-checkbox-1]").click();
+        $(byText("Reading")).click();
+        $$(".custom-control-label").last().click();
+
+        $("#uploadPicture").uploadFromClasspath("test.png");
+
+        $("#currentAddress-wrapper").$("#currentAddress").setValue("Richmond 23 - 65  st.Virginia");
+
+        $("#stateCity-wrapper").click();
+        $(byText("NCR")).click();
+        $("#city").click();
+        $(byText("Delhi")).click();
+
+        $("#submit").click();
+        $(".modal-body").shouldHave
+                (text("firstName lastName"),
+                        text("userEmail@userEmail.com"),
+                        text("2142354635"),
+                        text("Male"),
+                        text("Hindi, Arts, Biology"),
+                        text("Sports, Reading, Music"),
+                        text("NCR Delhi"),
+                        text("test.png"),
+                        text("19 June,1995"),
+                        text("Richmond 23 - 65 st.Virginia"));
+        $("#closeLargeModal").click();
+
     }
-
-
 }
 
