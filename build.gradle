@@ -55,7 +55,7 @@ tasks.withType(JavaCompile) {
 //tasks.withType(Test).configureEach{ //https://youtu.be/ZIkIUCyJBGU?t=317 взял кусок отсюда - для параллельного выполнения тестов
 //    maxParallelForks = 3
 //}
-
+// Упомпинание про настройки в gradle для многопоточного выполнения тестов
 test {
     useJUnitPlatform()
     systemProperties(System.getProperties())    //https://youtu.be/ZIkIUCyJBGU?t=564
